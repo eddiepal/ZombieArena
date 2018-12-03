@@ -73,7 +73,7 @@ Debug/zombieArena.cpp.o: zombieArena.cpp \
  C:\SFML-2.5.1\include/SFML/Graphics/Sprite.hpp \
  C:\SFML-2.5.1\include/SFML/Graphics/Text.hpp \
  C:\SFML-2.5.1\include/SFML/Graphics/VertexBuffer.hpp player.hpp \
- zombieArena.hpp zombie.hpp textureHolder.hpp bullet.hpp
+ zombieArena.hpp zombie.hpp textureHolder.hpp bullet.hpp pickup.hpp
 
 C:\SFML-2.5.1\include/SFML/Graphics.hpp:
 
@@ -232,3 +232,5 @@ zombie.hpp:
 textureHolder.hpp:
 
 bullet.hpp:
+
+pickup.hpp:

@@ -82,10 +82,10 @@ void Pickup::update(float elapsedTime)
 	
 
 	if (m_Spawned) {
-		m_SecondsSinceSpawn += elaspedTime;
+		m_SecondsSinceSpawn += elapsedTime;
 	}
 	else {
-		m_SecondSinceDeSpawn += elaspedTime;
+		m_SecondsSinceDeSpawn += elapsedTime;
 	}
 	
 	if(m_SecondsSinceSpawn > m_SecondsToLive && m_Spawned)
@@ -93,12 +93,28 @@ void Pickup::update(float elapsedTime)
 		m_Spawned = false;
 		m_SecondsSinceDeSpawn = 0;
 	}
+	
+	if (m_SecondsSinceDeSpawn > m_SecondsToWait && !m_Spawned)
+	{
+		spawn();
+	}
 
      
 }
- 
+
 void Pickup::upgrade()
 {
+	if(m_Type == 1)
+	{
+		m_Value += (HEALTH_START_VALUE * .5);
+	}
+	else
+	{
+		m_Value += (AMMO_START_VALUE * .5);
+	}
+}
+ 
+
  
     //Code Here
   
