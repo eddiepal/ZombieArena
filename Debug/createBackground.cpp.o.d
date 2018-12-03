@@ -72,7 +72,8 @@ Debug/createBackground.cpp.o: createBackground.cpp \
  C:\SFML-2.5.1\include/SFML/Graphics/Glsl.inl \
  C:\SFML-2.5.1\include/SFML/Graphics/Sprite.hpp \
  C:\SFML-2.5.1\include/SFML/Graphics/Text.hpp \
- C:\SFML-2.5.1\include/SFML/Graphics/VertexBuffer.hpp zombieArena.hpp
+ C:\SFML-2.5.1\include/SFML/Graphics/VertexBuffer.hpp zombieArena.hpp \
+ zombie.hpp
 
 C:\SFML-2.5.1\include/SFML/Graphics.hpp:
 
@@ -223,3 +224,5 @@ C:\SFML-2.5.1\include/SFML/Graphics/Text.hpp:
 C:\SFML-2.5.1\include/SFML/Graphics/VertexBuffer.hpp:
 
 zombieArena.hpp:
+
+zombie.hpp:

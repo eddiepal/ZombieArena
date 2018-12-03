@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="ZombieArena" Version="10.0.0" InternalType="User templates">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00010001N0005Debug000000000000]]>
+    </Plugin>
+  </Plugins>
   <VirtualDirectory Name="Resources">
     <VirtualDirectory Name="sound">
       <File Name="Resources/sound/splat.wav"/>
@@ -26,19 +31,23 @@
       <File Name="Resources/graphics/ammo_icon.png"/>
     </VirtualDirectory>
   </VirtualDirectory>
-  <Plugins>
-    <Plugin Name="qmake">
-      <![CDATA[00010001N0005Debug000000000000]]>
-    </Plugin>
-  </Plugins>
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="pickup.cpp"/>
+    <File Name="pickup.hpp"/>
+    <File Name="zombieHorde.cpp"/>
     <File Name="zombieArena.hpp"/>
     <File Name="zombieArena.cpp"/>
+    <File Name="zombie.hpp"/>
+    <File Name="zombie.cpp"/>
+    <File Name="textureHolder.hpp"/>
+    <File Name="textureHolder.cpp"/>
     <File Name="player.hpp"/>
     <File Name="player.cpp"/>
     <File Name="createBackground.cpp"/>
+    <File Name="bullet.hpp"/>
+    <File Name="bullet.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

@@ -1,4 +1,4 @@
-Debug/zombieArena.cpp.o: zombieArena.cpp \
+Debug/zombieHorde.cpp.o: zombieHorde.cpp zombieArena.hpp zombie.hpp \
  C:\SFML-2.5.1\include/SFML/Graphics.hpp \
  C:\SFML-2.5.1\include/SFML/Window.hpp \
  C:\SFML-2.5.1\include/SFML/System.hpp \
@@ -72,8 +72,11 @@ Debug/zombieArena.cpp.o: zombieArena.cpp \
  C:\SFML-2.5.1\include/SFML/Graphics/Glsl.inl \
  C:\SFML-2.5.1\include/SFML/Graphics/Sprite.hpp \
  C:\SFML-2.5.1\include/SFML/Graphics/Text.hpp \
- C:\SFML-2.5.1\include/SFML/Graphics/VertexBuffer.hpp player.hpp \
- zombieArena.hpp zombie.hpp textureHolder.hpp bullet.hpp
+ C:\SFML-2.5.1\include/SFML/Graphics/VertexBuffer.hpp
+
+zombieArena.hpp:
+
+zombie.hpp:
 
 C:\SFML-2.5.1\include/SFML/Graphics.hpp:
 
@@ -222,13 +225,3 @@ C:\SFML-2.5.1\include/SFML/Graphics/Sprite.hpp:
 C:\SFML-2.5.1\include/SFML/Graphics/Text.hpp:
 
 C:\SFML-2.5.1\include/SFML/Graphics/VertexBuffer.hpp:
-
-player.hpp:
-
-zombieArena.hpp:
-
-zombie.hpp:
-
-textureHolder.hpp:
-
-bullet.hpp:
