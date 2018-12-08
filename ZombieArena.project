@@ -6,6 +6,10 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="Resources">
+    <VirtualDirectory Name="gamedata"/>
+    <VirtualDirectory Name="fonts">
+      <File Name="Resources/fonts/zombiecontrol3d.ttf"/>
+    </VirtualDirectory>
     <VirtualDirectory Name="sound">
       <File Name="Resources/sound/splat.wav"/>
       <File Name="Resources/sound/shoot.wav"/>

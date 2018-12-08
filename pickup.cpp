@@ -13,7 +13,7 @@ Pickup::Pickup(int type)
 	
 	if(m_Type == 1)
 	{
-		m_Sprite = Sprite(TextureHolder::GetTexture("..Resources/graphics/health_pickup.png"));
+		m_Sprite = Sprite(TextureHolder::GetTexture("../Resources/graphics/health_pickup.png"));
 		
 		m_Value = HEALTH_START_VALUE;
 	}

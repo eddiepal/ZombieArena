@@ -5,6 +5,9 @@
 #include "textureHolder.hpp"
 #include "bullet.hpp"
 #include "pickup.hpp"
+#include "sstream"
+#include "fstream"
+#include <SFML/Audio.hpp>
 
 
 using namespace sf;
@@ -78,6 +81,151 @@ int main()
 	
 	int score = 0;
 	int hiScore = 0;
+	
+	Sprite spriteGameOver;
+	Texture textureGameOver =
+	TextureHolder::GetTexture("../Resources/graphics/background.png");
+	spriteGameOver.setTexture(textureGameOver);
+	spriteGameOver.setPosition(0, 0);
+	
+	View hudView(FloatRect(0,0, resolution.x, resolution.y));
+	
+	Sprite spriteAmmoIcon;
+	Texture textureAmmoIcon = 
+	TextureHolder::GetTexture("../Resources/graphics/ammo_icon.png");
+	spriteAmmoIcon.setTexture(textureAmmoIcon);
+	spriteAmmoIcon.setPosition(20, 980);
+	
+	Font font;
+	font.loadFromFile("../Resources/fonts/zombiecontrol3d.ttf");
+	
+	Text pausedText;
+	pausedText.setFont(font);
+	pausedText.setCharacterSize(155);
+	pausedText.setFillColor(Color::White);
+	pausedText.setPosition(400, 400);
+	pausedText.setString("Press Enter \nto continue");
+	
+		// Game Over
+	Text gameOverText;
+	gameOverText.setFont(font);
+	gameOverText.setCharacterSize(125);
+	gameOverText.setFillColor(Color::White);
+	gameOverText.setPosition(250, 850);
+	gameOverText.setString("Press Enter to play");
+	 
+	// Levelling up
+	Text levelUpText;
+	levelUpText.setFont(font);
+	levelUpText.setCharacterSize(80);
+	levelUpText.setFillColor(Color::White);
+	levelUpText.setPosition(150, 250);
+	std::stringstream levelUpStream;
+	levelUpStream <<
+    "1- Increased rate of fire" <<
+    "\n2- Increased clip size(next reload)" <<
+    "\n3- Increased max health" <<
+    "\n4- Increased run speed" <<
+    "\n5- More and better health pickups" <<
+    "\n6- More and better ammo pickups";
+	levelUpText.setString(levelUpStream.str());
+	 
+	// Ammo
+	Text ammoText;
+	ammoText.setFont(font);
+	ammoText.setCharacterSize(55);
+	ammoText.setFillColor(Color::White);
+	ammoText.setPosition(200, 980);
+	 
+	// Score
+	Text scoreText;
+	scoreText.setFont(font);
+	scoreText.setCharacterSize(55);
+	scoreText.setFillColor(Color::White);
+	scoreText.setPosition(20, 0);
+	
+	std::ifstream inputFile("../Resources/gamedata/scores.txt");
+	if (inputFile.is_open())
+	{
+		inputFile >> hiScore;
+		inputFile.close();
+	}
+	 
+	// Hi Score
+	Text hiScoreText;
+	hiScoreText.setFont(font);
+	hiScoreText.setCharacterSize(55);
+	hiScoreText.setFillColor(Color::White);
+	hiScoreText.setPosition(1400, 0);
+	std::stringstream s;
+	s << "Hi Score:" << hiScore;
+	hiScoreText.setString(s.str());
+	 
+	// Zombies remaining
+	Text zombiesRemainingText;
+	zombiesRemainingText.setFont(font);
+	zombiesRemainingText.setCharacterSize(55);
+	zombiesRemainingText.setFillColor(Color::White);
+	zombiesRemainingText.setPosition(1500, 980);
+	zombiesRemainingText.setString("Zombies: 100");
+	 
+	// Wave number
+	int wave = 0;
+	Text waveNumberText;
+	waveNumberText.setFont(font);
+	waveNumberText.setCharacterSize(55);
+	waveNumberText.setFillColor(Color::White);
+	waveNumberText.setPosition(1250, 980);
+	waveNumberText.setString("Wave: 0");
+	 
+	// Health bar
+	RectangleShape healthBar;
+	healthBar.setFillColor(Color::Red);
+	healthBar.setPosition(450, 980);
+	
+	int framesSinceLastHUDUpdate = 0;
+	int fpsMeasurementFrameInterval = 1000;
+	
+	SoundBuffer hitBuffer;
+	hitBuffer.loadFromFile("../Resources/sound/hit.wav");
+	Sound hit;
+	hit.setBuffer(hitBuffer);
+	
+		// Prepare the splat sound
+	SoundBuffer splatBuffer;
+	splatBuffer.loadFromFile("../Resources/sound/splat.wav");
+	sf::Sound splat;
+	splat.setBuffer(splatBuffer);
+	 
+	// Prepare the shoot sound
+	SoundBuffer shootBuffer;
+	shootBuffer.loadFromFile("../Resources/sound/shoot.wav");
+	Sound shoot;
+	shoot.setBuffer(shootBuffer);
+	 
+	// Prepare the reload sound
+	SoundBuffer reloadBuffer;
+	reloadBuffer.loadFromFile("../Resources/sound/reload.wav");
+	Sound reload;
+	reload.setBuffer(reloadBuffer);
+	 
+	// Prepare the failed sound
+	SoundBuffer reloadFailedBuffer;
+	reloadFailedBuffer.loadFromFile("../Resources/sound/reload_failed.wav");
+	Sound reloadFailed;
+	reloadFailed.setBuffer(reloadFailedBuffer);
+	 
+	// Prepare the powerup sound
+	SoundBuffer powerupBuffer;
+	powerupBuffer.loadFromFile("../Resources/sound/powerup.wav");
+	Sound powerup;
+	powerup.setBuffer(powerupBuffer);
+	 
+	// Prepare the pickup sound
+	SoundBuffer pickupBuffer;
+	pickupBuffer.loadFromFile("../Resources/sound/pickup.wav");
+	Sound pickup;
+	pickup.setBuffer(pickupBuffer);
     
     // The main game loop
     while (window.isOpen())
@@ -99,12 +247,23 @@ int main()
                     state == State::PLAYING)
                 {
                     state = State::PAUSED;
+					wave = 0;
+					score = 0;
+					
+					currentBullet = 0;
+					bulletsSpare = 24;
+					bulletsInClip = 6;
+					clipSize = 6;
+					fireRate = 1;
+					
+					player.resetPlayerStats();
                 }
                 
                 // Restart while paused
                 else if (event.key.code == Keyboard::Return &&
                          state == State::PAUSED)
                 {
+					fireRate++;
                     state = State::PLAYING;
                     // Reset the clock so there isn't a frame jump
                     clock.restart();
@@ -125,6 +284,7 @@ int main()
                             // Plenty of bullets. Reload.
                             bulletsInClip = clipSize;
                             bulletsSpare -= clipSize;
+							reload.play();
                         }
                         else if (bulletsSpare > 0) {
                             // Only few bullets left
@@ -132,6 +292,7 @@ int main()
                             bulletsSpare = 0;
                         }
                         else {
+							reloadFailed.play();
                             // More here later
                         }
                     }
@@ -205,7 +366,7 @@ int main()
                         currentBullet = 0;
                     }
                     lastPressed = gameTimeTotal;
-                    
+                    shoot.play();
                     bulletsInClip--;
                 }
                 
@@ -224,35 +385,41 @@ int main()
             
             if (event.key.code == Keyboard::Num2)
             {
+				clipSize += clipSize;
                 state = State::PLAYING;
             }
             
             if (event.key.code == Keyboard::Num3)
             {
+				player.upgradeHealth();
                 state = State::PLAYING;
             }
             
             if (event.key.code == Keyboard::Num4)
             {
+				player.upgradeSpeed();
                 state = State::PLAYING;
             }
             
             if (event.key.code == Keyboard::Num5)
             {
+				healthPickup.upgrade();
                 state = State::PLAYING;
             }
             
             if (event.key.code == Keyboard::Num6)
             {
+				ammoPickup.upgrade();
                 state = State::PLAYING;
             }
             
             if (state == State::PLAYING)
             {
+				wave++;
                 // Prepare the level
                 // We will modify the next two lines later
-                arena.width = 500;
-                arena.height = 500;
+                arena.width = 500 * wave;
+                arena.height = 500 * wave;
                 arena.left = 0;
                 arena.top = 0;
                 
@@ -268,6 +435,8 @@ int main()
 				
 				healthPickup.setArena(arena);
 				ammoPickup.setArena(arena);
+				
+				numZombies = 5 * wave;
                 
                 // Create a horde of zombies
                 numZombies = 10;
@@ -276,6 +445,8 @@ int main()
                 delete[] zombies;
                 zombies = createHorde(numZombies, arena);
                 numZombiesAlive = numZombies;
+				
+				powerup.play();
                 
                 // Reset the clock so there isn't a frame jump
                 clock.restart();
@@ -372,7 +543,7 @@ int main()
 									state = State::LEVELING_UP;
 								}
 							}
-							 
+							 splat.play();
 						}
 					}
 					 
@@ -389,12 +560,17 @@ int main()
 					 
 					if (player.hit(gameTimeTotal))
 					{
+						hit.play();
 						// More here later
 					}
 					 
 					if (player.getHealth() <= 0)
 					{
 						state = State::GAME_OVER;
+						
+						std::ofstream outputFile("../Resources/gamedata/scores.txt");
+						outputFile << hiScore;
+						outputFile.close();
 						 
 					}
 				}
@@ -406,6 +582,7 @@ int main()
 				(healthPickup.getPosition()) && healthPickup.isSpawned())
 			{
 				player.increaseHealthLevel(healthPickup.gotIt());
+				pickup.play();
 				 
 			}// End player touch health
 			 
@@ -415,10 +592,42 @@ int main()
 				(ammoPickup.getPosition()) && ammoPickup.isSpawned())
 			{
 				bulletsSpare += ammoPickup.gotIt();
+				reload.play();
 				 
 			} // End player touch ammo
+			
+			healthBar.setSize(Vector2f(player.getHealth() * 3, 70));
+			
+			framesSinceLastHUDUpdate++;
+			
+			if (framesSinceLastHUDUpdate > fpsMeasurementFrameInterval)
+			{
+				std::stringstream ssAmmo;
+				std::stringstream ssScore;
+				std::stringstream ssHiScore;
+				std::stringstream ssWave;
+				std::stringstream ssZombiesAlive;
+				
+				ssAmmo << bulletsInClip << "/" << bulletsSpare;
+				ammoText.setString(ssAmmo.str());
+				
+				ssScore << "Score: " << score;
+				scoreText.setString(ssScore.str());
+				
+				ssHiScore << "Hi Score: " << hiScore;
+				hiScoreText.setString(ssHiScore.str());
+				
+				ssWave << "Wave: " << wave;
+				waveNumberText.setString(ssWave.str());
+				
+				ssZombiesAlive << "Zombies: " << numZombiesAlive;
+				zombiesRemainingText.setString(ssZombiesAlive.str());
+				
+				framesSinceLastHUDUpdate = 0;
+			}
+		}
             
-        }// End updating the scene
+        // End updating the scene
         
         /*
          **************
@@ -462,18 +671,35 @@ int main()
             
             //Draw the crosshair
             window.draw(spriteCrosshair);
+			
+			window.setView(hudView);
+			
+			window.draw(spriteAmmoIcon);
+			window.draw(ammoText);
+			window.draw(scoreText);
+			window.draw(hiScoreText);
+			window.draw(healthBar);
+			window.draw(waveNumberText);
+			window.draw(zombiesRemainingText);
         }
         
         if (state == State::LEVELING_UP)
         {
+			window.draw(spriteGameOver);
+			window.draw(levelUpText);
         }
         
         if (state == State::PAUSED)
         {
+			window.draw(pausedText);
         }
         
         if (state == State::GAME_OVER)
         {
+			window.draw(spriteGameOver);
+			window.draw(gameOverText);
+			window.draw(scoreText);
+			window.draw(hiScoreText);
         }
         
         window.display();

@@ -73,7 +73,24 @@ Debug/zombieArena.cpp.o: zombieArena.cpp \
  C:\SFML-2.5.1\include/SFML/Graphics/Sprite.hpp \
  C:\SFML-2.5.1\include/SFML/Graphics/Text.hpp \
  C:\SFML-2.5.1\include/SFML/Graphics/VertexBuffer.hpp player.hpp \
- zombieArena.hpp zombie.hpp textureHolder.hpp bullet.hpp pickup.hpp
+ zombieArena.hpp zombie.hpp textureHolder.hpp bullet.hpp pickup.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/InputSoundFile.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/Export.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/Listener.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/Music.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/SoundStream.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/SoundSource.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/AlResource.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/OutputSoundFile.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/Sound.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/SoundBuffer.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/SoundBufferRecorder.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/SoundRecorder.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/SoundFileFactory.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/SoundFileFactory.inl \
+ C:\SFML-2.5.1\include/SFML/Audio/SoundFileReader.hpp \
+ C:\SFML-2.5.1\include/SFML/Audio/SoundFileWriter.hpp
 
 C:\SFML-2.5.1\include/SFML/Graphics.hpp:
 
@@ -234,3 +251,37 @@ textureHolder.hpp:
 bullet.hpp:
 
 pickup.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/InputSoundFile.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/Export.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/Listener.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/Music.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/SoundStream.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/SoundSource.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/AlResource.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/OutputSoundFile.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/Sound.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/SoundBuffer.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/SoundBufferRecorder.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/SoundRecorder.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/SoundFileFactory.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/SoundFileFactory.inl:
+
+C:\SFML-2.5.1\include/SFML/Audio/SoundFileReader.hpp:
+
+C:\SFML-2.5.1\include/SFML/Audio/SoundFileWriter.hpp:
